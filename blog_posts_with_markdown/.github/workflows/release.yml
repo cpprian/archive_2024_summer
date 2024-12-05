@@ -1,0 +1,70 @@
+name: release
+
+on: push
+
+env:
+    REGISTRY: ghcr.io
+    USERS_IMAGE_NAME: "blogposts-users"
+    WEBSITE_IMAGE_NAME: "blogposts-website"
+    POSTS_IMAGE_NAME: "blogposts-posts"
+    COMMENTS_IMAGE_NAME: "blogposts-comments"
+
+jobs:
+    multi-registries:
+        name: "Build"
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+            packages: write
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v2
+            - name: Login to DockerHub
+              uses: docker/login-action@v2
+              with:
+                username: ${{ secrets.DOCKERHUB_USERNAME }}
+                password: ${{ secrets.DOCKERHUB_TOKEN }}
+            - name: Login to GitHub Container Registry
+              uses: docker/login-action@v2
+              with:
+                registry: ${{ env.REGISTRY }}
+                username: ${{ github.actor }}
+                password: ${{ secrets.GITHUB_TOKEN }}
+            - name: Build and push the users image
+              uses: docker/build-push-action@v3
+              with:
+                context: ./users/
+                file: ./users/Dockerfile
+                push: true
+                tags: |
+                    cpprian/${{ env.USERS_IMAGE_NAME }}
+                    ghcr.io/cpprian/${{ env.USERS_IMAGE_NAME }}
+            - name: Build and push the website image
+              uses: docker/build-push-action@v3
+              with:
+                context: ./website/
+                file: ./website/Dockerfile
+                push: true
+                tags: |
+                    cpprian/${{ env.WEBSITE_IMAGE_NAME }}
+                    ghcr.io/cpprian/${{ env.WEBSITE_IMAGE_NAME }}
+            - name: Build and push the posts image
+              uses: docker/build-push-action@v3
+              with:
+                context: ./posts/
+                file: ./posts/Dockerfile
+                push: true
+                tags: |
+                    cpprian/${{ env.POSTS_IMAGE_NAME }}
+                    ghcr.io/cpprian/${{ env.POSTS_IMAGE_NAME }}
+            - name: Build and push the comments image
+              uses: docker/build-push-action@v3
+              with:
+                context: ./comments/
+                file: ./comments/Dockerfile
+                push: true
+                tags: |
+                    cpprian/${{ env.COMMENTS_IMAGE_NAME }}
+                    ghcr.io/cpprian/${{ env.COMMENTS_IMAGE_NAME }}

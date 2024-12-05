@@ -1,0 +1,28 @@
+{{ template "base" . }}
+
+{{ define "main" }}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>My Page</h1>
+            <p>
+                <a href="/logout" class="btn btn-primary">Logout</a>
+            </p>
+            <p>
+                <a href="/post/create" class="btn btn-primary">Create Post</a>
+            </p>
+            {{ range .Posts }}
+                <div class="col-md-8">
+                    <h1 class="text-primary">{{ .Post.Title }} - {{ .Post.CreatedAt }}</h1>
+                    <h4 class="font-weight-bold">by {{ .Username }}</h4>
+                    <div class="bg-dark text-white rounded-4 border-4">
+                        {{ .Content }}
+                    </div>
+                </div>
+            {{ end }}
+        </div>
+    </div>
+</div>
+
+{{ end }}
