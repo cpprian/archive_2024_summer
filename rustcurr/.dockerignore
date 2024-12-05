@@ -1,0 +1,10 @@
+/target
+
+/.vscode
+
+.env.example
+
+/.git
+.gitignore
+
+*.json

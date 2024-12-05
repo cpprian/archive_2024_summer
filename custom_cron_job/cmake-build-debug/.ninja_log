@@ -1,0 +1,8 @@
+# ninja log v5
+1	64	1671878009867097949	CMakeFiles/custom_cron_job.dir/main.c.o	4bd7024c1beae964
+1	33	1671878009839110119	CMakeFiles/custom_cron_job.dir/cron_util/cron_util.c.o	a059fe2d6623b1cc
+33	61	1671878009867097949	CMakeFiles/custom_cron_job.dir/network/server/server.c.o	23da394f27527636
+33	62	1671878009867097949	CMakeFiles/custom_cron_job.dir/util/arg_handler.c.o	ede31a86643a03f2
+2	33	1671878009839110119	CMakeFiles/custom_cron_job.dir/network/client/client.c.o	55902f6be40f5a41
+83	109	1671878063882807008	custom_cron_job	a8ac59b777ab1dff
+0	83	1671878063858817430	CMakeFiles/custom_cron_job.dir/rtlsp/rtlsp.c.o	631d89386580057c

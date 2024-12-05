@@ -1,0 +1,47 @@
+mongodb:
+  enabled: true
+
+  image: 
+    repository: mongo
+    tag: 4.2.23
+    
+  auth:
+    enabled: false
+  
+  readinessProbe:
+    enabled: false
+  
+  livenessProbe:
+    enabled: false
+
+  persistence:
+    mountPath: /data/db
+
+# Blogposts users values
+users:
+  args:
+    - "-mongoURI"
+    - "mongodb://blogposts-mongodb:27017/"
+
+# Blogposts website values
+website:
+  args:
+    - "-usersAPI"
+    - "http://blogposts-users/api/users/"
+    - "-postsAPI"
+    - "http://blogposts-posts/api/posts/"
+    - "-commentsAPI"
+    - "http://blogposts-comments/api/comments/"
+
+# Blogposts posts values
+posts:
+  args:
+    - "-mongoURI"
+    - "mongodb://blogposts-mongodb:27017/"
+
+# Blogposts comments values
+comments:
+  args:
+    - "-mongoURI"
+    - "mongodb://blogposts-mongodb:27017/"
+    
