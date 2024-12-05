@@ -1,0 +1,3 @@
+filename: "./data/question.csv"
+datafile: "./data/data.csv"
+scorefile: "./data/score.json"
