@@ -1,0 +1,33 @@
+.button_standard, .button_S, .button_O {
+    -fx-min-height: 50;
+    -fx-min-width: 50;
+    -fx-max-height: 100;
+    -fx-max-width: 100;
+    -fx-font-size: 18px;
+    -fx-font-weight: 200;
+    -fx-text-fill: #FFFFFF;
+}
+
+.button_S {
+    -fx-background-color: #e84118;
+}
+
+.button_O {
+    -fx-background-color: #00a8ff;
+}
+.frame {
+    -fx-border-color:  #178a25;
+    -fx-border-width:  5px;
+    -fx-border-radius:  5px;
+}
+.infoText{
+    -fx-font-weight: regular;
+    -fx-text-fill: #FFFFFF;
+}
+.infoTextBonus{
+    -fx-font-weight: bold;
+    -fx-text-fill: #178a25;
+}
+.activePlayerName{
+    -fx-font-weight: bold;
+}
