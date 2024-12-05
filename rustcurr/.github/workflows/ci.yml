@@ -1,0 +1,108 @@
+# Resource: https://github.com/metaplex-foundation/sugar/blob/main/.github/workflows/build.yml
+name: CI
+
+on: [push]
+
+env:
+  PROJECT_NAME: rustcurr
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os:
+          - windows-latest
+          - ubuntu-latest
+          - macos-latest
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+
+        - name: Install libudev-dev on Ubuntu
+          if: runner.os == 'Linux'
+          run: |
+            sudo apt-get update
+            sudo apt-get install libudev-dev
+
+        - name: Install Latest Rust
+          uses: actions-rs/toolchain@v1
+          with: 
+            toolchain: stable
+            default: true
+            override: true
+
+        - name: Install rustfmt, and clippy
+          run: |
+            rustup component add rustfmt clippy
+
+        - name: Create .env file
+          id: env
+          shell: bash
+          run: |
+            echo "API_KEY=${{ secrets.API_KEY }}\nCACHE_FILE_PATH=cache.json" >> .env
+
+        - name: Build
+          id: build
+          shell: bash
+          run: |
+            binary_extension=""
+            if [[ "${RUNNER_OS}" == "Windows" ]]; then
+                binary_extension=".exe"
+                binary_path="rustcurr-windows-latest${binary_extension}"
+            elif [[ "${RUNNER_OS}" == "macOS" ]]; then
+                binary_path="rustcurr-macos-intel-latest"
+            elif [[ "${RUNNER_OS}" == "Linux" ]]; then
+                binary_path="rustcurr-ubuntu-latest"
+            else
+                echo "error: unkown OS: ${RUNNER_OS}"
+                exit 1
+            fi
+            echo "::set-output name=binary_path::${binary_path}"
+
+            # clean build for release
+            if [[ "${GITHUB_REF}" = refs/tags/* ]]; then
+                cargo clean
+            fi
+
+            cargo build --all --release
+            cp "target/release/rustcurr${binary_extension}" "${binary_path}"
+            strip "${binary_path}"
+
+        - name: Test
+          uses: actions-rs/cargo@v1
+          with: 
+            command: test
+
+        - name: Rustfmt
+          uses: actions-rs/cargo@v1
+          with: 
+            command: fmt
+            args: --all -- --check
+
+        - name: Clippy
+          uses: actions-rs/cargo@v1
+          with: 
+            command: clippy
+            args: -- -D warnings
+
+  push:
+    runs-on: ubuntu-latest
+
+    steps:
+        - name: Set up Docker Buildx
+          uses: docker/setup-buildx-action@v3
+
+        - name: Log in to Docker Hub
+          uses: docker/login-action@v3
+          with:
+            username: ${{ secrets.DOCKERHUB_USERNAME }}
+            password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+        - name: Build and push Docker image
+          uses: docker/build-push-action@v5
+          with:
+            push: true
+            tags: cpprian/${{ env.PROJECT_NAME }}:latest
