@@ -1,0 +1,44 @@
+[
+    {
+        "id": 1,
+        "username": "john",
+        "password": "john",
+        "role": "Admin"
+    },
+    {
+        "id": 2,
+        "username": "jane",
+        "password": "jane",
+        "role": "User"
+    },
+    {
+        "id": 3,
+        "username": "sensor1",
+        "password": "sensor1",
+        "role": "User"
+    },
+    {
+        "id": 4,
+        "username": "sensor2",
+        "password": "sensor2",
+        "role": "User"
+    },
+    {
+        "id": 5,
+        "username": "thermostat1",
+        "password": "thermostat1",
+        "role": "User"
+    },
+    {
+        "id": 6,
+        "username": "thermostat2",
+        "password": "thermostat2",
+        "role": "User"
+    },
+    {
+        "id": 7,
+        "username": "sensor3",
+        "password": "sensor3",
+        "role": "User"
+    }
+]
